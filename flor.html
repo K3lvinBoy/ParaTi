@@ -1,0 +1,599 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Un ramo para ti</title>
+    <style>
+        body {
+            height: 100%;
+            width: 100%;
+            background: #000;
+            overflow: hidden;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            font-family: 'Acme', sans-serif;
+        }
+
+        .container {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            margin-top: 20px; /* Espacio para centrar mejor */
+        }
+
+        .glass {
+            height: 400px;
+            width: 300px;
+            background: rgba(18, 33, 57, 0.8);
+            border-radius: 150px 150px 0px 0px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .glass:before {
+            content: "";
+            height: 20px;
+            width: 20px;
+            transform-origin: center;
+            border: 12px solid rgba(18, 33, 57, 0.8);
+            border-radius: 100%;
+            position: absolute;
+            left: 128px;
+            top: -37px;
+        }
+
+        .glass:after {
+            content: "";
+            position: absolute;
+            height: 8px;
+            width: 300px;
+            background: #a52a2a;
+            top: 100%;
+            left: 0%;
+        }
+
+        .shine {
+            width: 13px;
+            height: 165px;
+            background: rgba(255, 255, 255, 0.4);
+            opacity: 0.4;
+            position: absolute;
+            left: 85%;
+            top: 100px;
+            border-radius: 50px;
+            z-index: 10;
+            transform: rotate(20deg);
+        }
+
+        .shine:before {
+            content: "";
+            width: 13px;
+            height: 20px;
+            position: absolute;
+            background: rgba(255, 255, 255, 0.4);
+            top: 182px;
+            border-radius: 50px;
+        }
+
+        .petals>div {
+            position: absolute;
+            background: #ffd700;
+            width: 42px;
+            height: 60px;
+            top: 100px;
+            transition: all 0.5s ease-out;
+        }
+
+        .petals>div:nth-child(1) {
+            border-radius: 7px;
+            box-shadow: 0px 0px 30px rgba(255, 215, 0, 1);
+            left: 134px;
+            top: 100px;
+            background: #ffd700;
+        }
+
+        .petals>div:nth-child(2),
+        .petals>div:nth-child(4),
+        .petals>div:nth-child(6) {
+            background: #e6b800;
+            left: 115px;
+            border-radius: 0px 25px 0px 25px;
+            transform-origin: bottom right;
+        }
+
+        .petals>div:nth-child(3),
+        .petals>div:nth-child(5),
+        .petals>div:nth-child(7) {
+            background: #e6b800;
+            left: 150px;
+            border-radius: 25px 0px 25px 0px;
+            transform-origin: bottom left;
+        }
+
+        .petals>div:nth-child(2) {
+            z-index: 5;
+            background: #ccac00;
+            top: 109px;
+            height: 65px;
+            box-shadow: 0px 0px 30px rgba(255, 215, 0, .5);
+            animation: bloom2 3s ease-in-out;
+            animation-fill-mode: forwards;
+        }
+
+        .petals>div:nth-child(3) {
+            z-index: 4;
+            background: #ccac00;
+            top: 109px;
+            height: 65px;
+            box-shadow: 0px 0px 30px rgba(255, 215, 0, .5);
+            animation: bloom3 3s ease-in-out, glowing 2.5s ease-in-out infinite;
+            animation-fill-mode: forwards;
+        }
+
+        .petals>div:nth-child(4) {
+            z-index: 3;
+            background: #e6b800;
+            top: 106px;
+            height: 67px;
+            box-shadow: 0px 0px 30px rgba(255, 215, 0, .5);
+            animation: bloom4 3s ease-in-out, glowing 2.5s ease-in-out infinite;
+            animation-fill-mode: forwards;
+        }
+
+        .petals>div:nth-child(5) {
+            z-index: 2;
+            background: #e6b800;
+            top: 106px;
+            height: 67px;
+            box-shadow: 0px 0px 30px rgba(255, 215, 0, .5);
+            animation: bloom5 3s ease-in-out, glowing 2.5s ease-in-out infinite;
+            animation-fill-mode: forwards;
+        }
+
+        .petals>div:nth-child(6) {
+            z-index: 1;
+            background: #ffcc00;
+            top: 100px;
+            height: 65px;
+            box-shadow: 0px 0px 30px rgba(255, 215, 0, .3);
+            animation: bloom6 3s ease-in-out, glowing 2.5s ease-in-out infinite;
+            animation-fill-mode: forwards;
+        }
+
+        .petals>div:nth-child(7) {
+            z-index: 0;
+            background: #ffcc00;
+            top: 100px;
+            height: 65px;
+            box-shadow: 0px 0px 30px rgba(255, 215, 0, .3);
+            animation: bloom7 3s ease-in-out, glowing 2.5s ease-in-out infinite;
+            animation-fill-mode: forwards;
+        }
+
+        .deadPetals>div {
+            position: absolute;
+            background: #ffd700;
+            width: 10px;
+            height: 7px;
+            top: 100px;
+            border-radius: 0px 15px 0px 15px;
+            box-shadow: 0px 0px 15px rgba(255, 215, 0, .5);
+            transition: all 0.5s ease-out;
+        }
+
+        .deadPetals>div:nth-child(1) {
+            left: 119229959987px;
+            transform: rotate(-30deg);
+            animation: falling 20s 4s ease-in-out infinite;
+        }
+
+        .deadPetals>div:nth-child(2) {
+            left: 26331084746px;
+            transform: rotate(-30deg);
+            animation: falling 20s 8s ease-in-out infinite;
+        }
+
+        .deadPetals>div:nth-child(3) {
+            left: 129759500363px;
+            transform: rotate(-30deg);
+            animation: falling 20s 12s ease-in-out infinite;
+        }
+
+        .deadPetals>div:nth-child(4) {
+            left: 99323149959px;
+            transform: rotate(-30deg);
+            animation: falling 20s 16s ease-in-out infinite;
+        }
+
+        .leaves>div:nth-last-child(1) {
+            position: absolute;
+            width: 27px;
+            height: 15px;
+            background: #338f37;
+            top: 167px;
+            left: 139px;
+            border-radius: 50px;
+        }
+
+        .leaves>div:nth-child(1) {
+            position: absolute;
+            width: 7px;
+            height: 195px;
+            background: #054c05;
+            top: 154px;
+            left: 150px;
+            border-radius: 0 0 50px 50px;
+        }
+
+        .leaves>div:nth-child(2) {
+            position: absolute;
+            width: 30px;
+            height: 50px;
+            top: 26px;
+            border-radius: 5px 40px 20px 40px;
+            background: #054c05;
+            transform-origin: bottom;
+            transform: rotate(-30deg);
+            top: 206px;
+            left: 127px;
+            box-shadow: inset 5px 5px #066406;
+        }
+
+        .leaves>div:nth-child(3) {
+            position: absolute;
+            width: 30px;
+            height: 50px;
+            top: 26px;
+            border-radius: 40px 1px 40px 20px;
+            background: #054c05;
+            transform-origin: bottom;
+            transform: rotate(30deg);
+            top: 180px;
+            left: 150px;
+            box-shadow: inset -5px 5px #066406;
+        }
+
+        .thorns>div {
+            position: absolute;
+            width: 0;
+            height: 0;
+            top: 100px;
+        }
+
+        .thorns>div:nth-child(odd) {
+            border-top: 7px solid transparent;
+            border-bottom: 7px solid transparent;
+            border-left: 7px solid #054c05;
+            left: 157px;
+        }
+
+        .thorns>div:nth-child(even) {
+            border-top: 7px solid transparent;
+            border-bottom: 7px solid transparent;
+            border-right: 7px solid #054c05;
+            left: 142px;
+        }
+
+        .thorns>div:nth-child(1) {
+            top: 232px;
+        }
+
+        .thorns>div:nth-child(2) {
+            top: 195px;
+        }
+
+        .thorns>div:nth-child(4) {
+            top: 262px;
+        }
+
+        @keyframes bloom2 {
+            50% {
+                transform: rotate(-90deg);
+                top: 200px;
+                left: 75px;
+            }
+
+            100% {
+                transform: rotate(-60deg);
+                top: 307px;
+                left: 50px;
+                background: #997200;
+                box-shadow: 0px 0px 0px rgba(255, 215, 0, 0);
+            }
+        }
+
+        @keyframes bloom3 {
+            100% {
+                transform: rotate(50deg);
+            }
+        }
+
+        @keyframes bloom4 {
+            100% {
+                transform: rotate(-25deg);
+            }
+        }
+
+        @keyframes bloom5 {
+            100% {
+                transform: rotate(25deg);
+            }
+        }
+
+        @keyframes bloom6 {
+            100% {
+                transform: rotate(-10deg);
+            }
+        }
+
+        @keyframes bloom7 {
+            100% {
+                transform: rotate(10deg);
+            }
+        }
+
+        @keyframes glowing {
+            50% {
+                background: #ffdf00;
+                box-shadow: 0px 0px 50px rgba(255, 215, 0, 1);
+            }
+        }
+
+        @keyframes falling {
+            20% {
+                top: 167px;
+                background: #997200;
+                box-shadow: 0px 0px 0px rgba(255, 215, 0, 0);
+            }
+
+            100% {
+                top: 167px;
+                opacity: 0;
+            }
+        }
+
+        /* Estrellas brillantes */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .stars div {
+            position: absolute;
+            background: #fff;
+            width: 8px; /* Tamaño aumentado */
+            height: 8px; /* Tamaño aumentado */
+            border-radius: 50%;
+            animation: twinkle 2s infinite ease-in-out;
+            opacity: 0.9; /* Opacidad aumentada */
+            transform: rotate(45deg); /* Forma de rombo */
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.9; /* Opacidad aumentada */
+            }
+            50% {
+                opacity: 1; /* Opacidad aumentada */
+            }
+        }
+
+        /* Luna */
+        .moon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            background: #f0f0f0;
+            border-radius: 50%;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
+            z-index: 1;
+        }
+
+        .moon::after {
+            content: "";
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 60px;
+            height: 60px;
+            background: #e0e0e0;
+            border-radius: 50%;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .message {
+            position: absolute;
+            bottom: -150px; /* Ajusta este valor para mover el texto más abajo */
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Acme', sans-serif;
+            font-size: 20px;
+            color: #fff;
+            text-align: center;
+            line-height: 1.5;
+            opacity: 0.9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .minecraft-icon {
+            width: 24px;
+            height: 24px;
+            filter: brightness(1.2); /* Aumenté el brillo */
+        }
+
+        /* Estilo del botón pixelado */
+        .pixel-button {
+            background-color: #ff0000; /* Color rojo */
+            border: 2px solid #8b0000; /* Borde más oscuro para efecto pixelado */
+            color: white; /* Texto blanco */
+            font-family: 'Acme', sans-serif; /* Misma tipografía que el texto */
+            font-size: 16px;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            margin-top: 20px; /* Espacio entre el texto y el botón */
+            box-shadow: 
+                2px 2px 0 #8b0000, /* Sombra para efecto pixelado */
+                4px 4px 0 #8b0000;
+            transition: all 0.1s ease;
+        }
+
+        .pixel-button:active {
+            box-shadow: 
+                1px 1px 0 #8b0000, /* Efecto de presionado */
+                2px 2px 0 #8b0000;
+            transform: translate(2px, 2px); /* Mueve el botón al hacer clic */
+        }
+
+<style>
+    /* Variables para el tamaño de la hoja */
+    :root {
+        --hoja-width: 10%; /* Ancho de la hoja (puedes cambiarlo) */
+        --hoja-height: 500%; /* Alto de la hoja (puedes cambiarlo) */
+    }
+
+    /* Estilo de la hoja que se desenrolla */
+    .hoja {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 0;
+        height: 0;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+        transition: all 1s ease;
+        opacity: 0;
+        z-index: 100;
+    }
+
+    .hoja.abierta {
+        width: var(--hoja-width); /* Usa la variable para el ancho */
+        height: var(--hoja-height); /* Usa la variable para el alto */
+        opacity: 1;
+    }
+
+    .hoja .contenido {
+        padding: 20px;
+        font-family: 'Acme', sans-serif;
+        font-size: 16px;
+        color: #000;
+        text-align: left; /* Alinea el texto a la izquierda */
+        opacity: 0;
+        transition: opacity 0.5s ease 0.5s; /* Retraso para que aparezca después de desenrollarse */
+        height: 50%; /* Asegura que el contenido ocupe toda la altura */
+        overflow-y: auto; /* Añade scroll si el contenido es muy largo */
+    }
+
+    .hoja.abierta .contenido {
+        opacity: 1;
+    }
+</style>
+
+       
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="stars">
+        <!-- Más estrellas -->
+        <div style="top: 5%; left: 10%;"></div>
+        <div style="top: 15%; left: 30%;"></div>
+        <div style="top: 25%; left: 50%;"></div>
+        <div style="top: 35%; left: 70%;"></div>
+        <div style="top: 45%; left: 90%;"></div>
+        <div style="top: 55%; left: 20%;"></div>
+        <div style="top: 65%; left: 40%;"></div>
+        <div style="top: 75%; left: 60%;"></div>
+        <div style="top: 85%; left: 80%;"></div>
+        <div style="top: 95%; left: 10%;"></div>
+    </div>
+    <div class="moon"></div>
+    <div class="container">
+        <div class="glass">
+            <div class="shine"></div>
+        </div>
+        <div class="thorns">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="leaves">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="petals">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="deadPetals">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <div class="message">
+        No son las mejores flores,<br>pero son para ti.
+        <!-- Botón pixelado -->
+        <button class="pixel-button" onclick="abrirHoja()">Abrir</button>
+    </div>
+
+    <!-- Hoja que se desenrolla -->
+    <div class="hoja" id="hoja" onclick="cerrarHoja()">
+        <div class="contenido">
+            <p>
+                Hola, bella chica:<br><br>
+                Esta flor es para ti. Ayer me enteré de que hoy se regalan flores amarillas, pero como estamos lejos, decidí hacerte esta flor para que la tengas siempre contigo. Es mi manera de expresarte que, en verdad, me gustas mucho y que quiero algo serio contigo. Hablo con sinceridad y de corazón, con la esperanza de poder conquistarte.<br><br>
+                Espero que te guste y que puedas sentir todo lo que quiero transmitirte.<br><br>
+                Atentamente,<br>
+                Eduardo.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function abrirHoja() {
+            const hoja = document.getElementById('hoja');
+            hoja.classList.add('abierta');
+        }
+
+        function cerrarHoja() {
+            const hoja = document.getElementById('hoja');
+            hoja.classList.remove('abierta');
+        }
+    </script>
+</body>
+
+</html>
